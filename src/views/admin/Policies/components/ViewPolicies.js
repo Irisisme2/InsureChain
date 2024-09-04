@@ -192,7 +192,7 @@ const ViewPolicies = () => {
   };
 
   return (
-    <Card p="6" borderWidth="1px" borderRadius="lg" shadow="md">
+    <Card p="6" shadow="md">
       <VStack align="start" spacing="20px">
         <Text fontSize="2xl" fontWeight="bold">
           Active Policies
