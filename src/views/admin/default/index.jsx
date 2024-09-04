@@ -41,17 +41,9 @@ import React from "react";
 import { MdAssignment, MdCheckCircle, MdAttachMoney, MdNotifications } from 'react-icons/md';
 import PremiumManagement from "views/admin/default/components/PremiumManagement";
 import DataInsights from "views/admin/default/components/DataInsights";
-import DailyTraffic from "views/admin/default/components/DailyTraffic";
-import PieCard from "views/admin/default/components/PieCard";
 import QuickActions from "views/admin/default/components/QuickActions";
 import PolicyManagement from "views/admin/default/components/PolicyManagement";
 import ClaimsSection from "views/admin/default/components/ClaimsSection";
-import {
-  columnsDataCheck,
-  columnsDataComplex,
-} from "views/admin/default/variables/columnsData";
-import tableDataCheck from "views/admin/default/variables/tableDataCheck.json";
-import tableDataComplex from "views/admin/default/variables/tableDataComplex.json";
 
 export default function UserReports() {
   // Chakra Color Mode

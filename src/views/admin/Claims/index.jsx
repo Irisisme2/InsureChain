@@ -22,44 +22,19 @@
 
 // Chakra imports
 import { Box, SimpleGrid } from "@chakra-ui/react";
-import DevelopmentTable from "views/admin/Claims/components/DevelopmentTable";
-import CheckTable from "views/admin/Claims/components/CheckTable";
-import ColumnsTable from "views/admin/Claims/components/ColumnsTable";
-import ComplexTable from "views/admin/Claims/components/ComplexTable";
-import {
-  columnsDataDevelopment,
-  columnsDataCheck,
-  columnsDataColumns,
-  columnsDataComplex,
-} from "views/admin/Claims/variables/columnsData";
-import tableDataDevelopment from "views/admin/Claims/variables/tableDataDevelopment.json";
-import tableDataCheck from "views/admin/Claims/variables/tableDataCheck.json";
-import tableDataColumns from "views/admin/Claims/variables/tableDataColumns.json";
-import tableDataComplex from "views/admin/Claims/variables/tableDataComplex.json";
+import MyClaims from "views/admin/Claims/components/MyClaims";
 import React from "react";
 
 export default function Settings() {
   // Chakra Color Mode
   return (
     <Box pt={{ base: "130px", md: "80px", xl: "80px" }}>
-      <SimpleGrid
-        mb='20px'
-        columns={{ sm: 1, md: 2 }}
-        spacing={{ base: "20px", xl: "20px" }}>
-        <DevelopmentTable
-          columnsData={columnsDataDevelopment}
-          tableData={tableDataDevelopment}
-        />
-        <CheckTable columnsData={columnsDataCheck} tableData={tableDataCheck} />
-        <ColumnsTable
-          columnsData={columnsDataColumns}
-          tableData={tableDataColumns}
-        />
-        <ComplexTable
-          columnsData={columnsDataComplex}
-          tableData={tableDataComplex}
-        />
-      </SimpleGrid>
-    </Box>
+    <SimpleGrid
+      mb='20px'
+      pacing={{ base: "20px", xl: "20px" }}>
+
+      <MyClaims  />
+    </SimpleGrid>
+  </Box>
   );
 }
