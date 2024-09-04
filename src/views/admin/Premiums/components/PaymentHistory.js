@@ -116,120 +116,104 @@ const PaymentHistory = () => {
   const currentPayments = filteredPayments.slice(indexOfFirstPayment, indexOfLastPayment);
 
   return (
-    <Card p='6'  shadow='md'>
+    <Card p='6' shadow='md'>
       <Text fontSize='2xl' fontWeight='bold' mb='4'>Payment History</Text>
       
       {/* Search, Filter and Date Range */}
       <VStack spacing={4} align='stretch' mb='4'>
-        <InputGroup>
-          <InputLeftElement pointerEvents='none' children={<SearchIcon color='gray.300' />} />
-          <Input
-            placeholder='Search by date, amount, or policy'
-            value={searchTerm}
-            onChange={(e) => setSearchTerm(e.target.value)}
-          />
-        </InputGroup>
+        <HStack spacing={4}>
+          <InputGroup>
+            <InputLeftElement>
+              <SearchIcon color='gray.300' />
+            </InputLeftElement>
+            <Input
+              placeholder='Search by date, amount, or policy'
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+            />
+          </InputGroup>
+          <Button onClick={handleSearch} colorScheme='blue'>Search</Button>
+        </HStack>
 
-        <SimpleGrid columns={{ base: 1, md: 2 }} spacing={4}>
+        <HStack spacing={4}>
+          <Select
+            placeholder='Filter by payment method'
+            value={filterMethod}
+            onChange={(e) => setFilterMethod(e.target.value)}
+          >
+            <option value='Credit Card'>Credit Card</option>
+            <option value='PayPal'>PayPal</option>
+            <option value='Bank Transfer'>Bank Transfer</option>
+          </Select>
+        </HStack>
+
+        <HStack spacing={4}>
           <FormControl>
-            <FormLabel>Filter by Payment Method</FormLabel>
-            <Select
-              placeholder='Select payment method'
-              value={filterMethod}
-              onChange={(e) => setFilterMethod(e.target.value)}
-            >
-              <option value='Credit Card'>Credit Card</option>
-              <option value='PayPal'>PayPal</option>
-              <option value='Bank Transfer'>Bank Transfer</option>
-            </Select>
+            <FormLabel>Start Date</FormLabel>
+            <DatePicker selected={startDate} onChange={date => setStartDate(date)} />
           </FormControl>
-
-          <HStack>
-            <Box>
-              <FormLabel>Start Date</FormLabel>
-              <DatePicker
-                selected={startDate}
-                onChange={(date) => setStartDate(date)}
-                isClearable
-                placeholderText='Select start date'
-                customInput={<Input />}
-              />
-            </Box>
-            <Box>
-              <FormLabel>End Date</FormLabel>
-              <DatePicker
-                selected={endDate}
-                onChange={(date) => setEndDate(date)}
-                isClearable
-                placeholderText='Select end date'
-                customInput={<Input />}
-              />
-            </Box>
-          </HStack>
-        </SimpleGrid>
+          <FormControl>
+            <FormLabel>End Date</FormLabel>
+            <DatePicker selected={endDate} onChange={date => setEndDate(date)} />
+          </FormControl>
+        </HStack>
       </VStack>
 
-      {/* Table */}
+      {/* Payments Table */}
       <Table variant='simple'>
         <Thead>
           <Tr>
             <Th>
-              <Button variant="link" onClick={() => handleSort('date')}>
-                Date <ArrowUpDownIcon />
-              </Button>
+              <HStack>
+                <Text>Date</Text>
+                <IconButton
+                  aria-label='Sort by date'
+                  icon={<ArrowUpDownIcon />}
+                  onClick={() => handleSort('date')}
+                />
+              </HStack>
             </Th>
             <Th>
-              <Button variant="link" onClick={() => handleSort('amount')}>
-                Amount <ArrowUpDownIcon />
-              </Button>
+              <HStack>
+                <Text>Amount</Text>
+                <IconButton
+                  aria-label='Sort by amount'
+                  icon={<ArrowUpDownIcon />}
+                  onClick={() => handleSort('amount')}
+                />
+              </HStack>
             </Th>
-            <Th>
-              <Button variant="link" onClick={() => handleSort('method')}>
-                Method <ArrowUpDownIcon />
-              </Button>
-            </Th>
-            <Th>
-              <Button variant="link" onClick={() => handleSort('policy')}>
-                Policy <ArrowUpDownIcon />
-              </Button>
-            </Th>
+            <Th>Method</Th>
+            <Th>Policy</Th>
+            <Th>Details</Th>
             <Th>Actions</Th>
           </Tr>
         </Thead>
         <Tbody>
-          {currentPayments.map(payment => (
+          {currentPayments.map((payment) => (
             <Tr key={payment.id}>
               <Td>{payment.date}</Td>
               <Td>${payment.amount.toFixed(2)}</Td>
               <Td>{payment.method}</Td>
               <Td>{payment.policy}</Td>
+              <Td>{payment.details}</Td>
               <Td>
-                <HStack spacing={2}>
-                  <Tooltip label="View Details">
-                    <IconButton
-                      aria-label="View Details"
-                      icon={<ViewIcon />}
-                      onClick={() => handleViewDetails(payment)}
-                      size='sm'
-                    />
-                  </Tooltip>
-                  <Tooltip label="Download Receipt">
-                    <IconButton
-                      aria-label="Download Receipt"
-                      icon={<DownloadIcon />}
-                      onClick={() => handleDownload(payment.id)}
-                      size='sm'
-                    />
-                  </Tooltip>
-                  <Tooltip label="Delete Payment">
-                    <IconButton
-                      aria-label="Delete Payment"
-                      icon={<DeleteIcon />}
-                      onClick={() => handleDelete(payment.id)}
-                      size='sm'
-                      colorScheme='red'
-                    />
-                  </Tooltip>
+                <HStack>
+                  <IconButton
+                    aria-label='View Details'
+                    icon={<ViewIcon />}
+                    onClick={() => handleViewDetails(payment)}
+                  />
+                  <IconButton
+                    aria-label='Download Receipt'
+                    icon={<DownloadIcon />}
+                    onClick={() => handleDownload(payment.id)}
+                  />
+                  <IconButton
+                    aria-label='Delete Payment'
+                    icon={<DeleteIcon />}
+                    onClick={() => handleDelete(payment.id)}
+                  />
                 </HStack>
               </Td>
             </Tr>
@@ -238,72 +222,46 @@ const PaymentHistory = () => {
       </Table>
 
       {/* Pagination */}
-      <HStack spacing={4} mt='4' justify="space-between">
+      <Flex mt='4' justify='space-between' align='center'>
         <Button
-          onClick={() => setCurrentPage(prev => Math.max(prev - 1, 1))}
-          disabled={currentPage === 1}
+          onClick={() => setCurrentPage((prev) => Math.max(prev - 1, 1))}
+          isDisabled={currentPage === 1}
         >
           Previous
         </Button>
-        <Text>{`Page ${currentPage} of ${Math.ceil(filteredPayments.length / itemsPerPage)}`}</Text>
+        <Text>
+          Page {currentPage} of {Math.ceil(filteredPayments.length / itemsPerPage)}
+        </Text>
         <Button
-          onClick={() => setCurrentPage(prev => Math.min(prev + 1, Math.ceil(filteredPayments.length / itemsPerPage)))}
-          disabled={currentPage === Math.ceil(filteredPayments.length / itemsPerPage)}
+          onClick={() => setCurrentPage((prev) => Math.min(prev + 1, Math.ceil(filteredPayments.length / itemsPerPage)))}
+          isDisabled={currentPage === Math.ceil(filteredPayments.length / itemsPerPage)}
         >
           Next
         </Button>
-        <Spacer />
-        <FormControl maxW="150px">
-          <FormLabel>Items per page</FormLabel>
-          <NumberInput
-            defaultValue={itemsPerPage}
-            min={1}
-            max={20}
-            onChange={(value) => setItemsPerPage(parseInt(value, 10))}
-          >
-            <NumberInputField />
-            <NumberInputStepper>
-              <NumberIncrementStepper />
-              <NumberDecrementStepper />
-            </NumberInputStepper>
-          </NumberInput>
-        </FormControl>
-      </HStack>
+      </Flex>
 
-      {/* View Details Modal */}
-      <Modal isOpen={isOpen} onClose={onClose} size="lg">
-        <ModalOverlay />
-        <ModalContent>
-          <ModalHeader>Payment Details</ModalHeader>
-          <ModalBody>
-            {selectedPayment && (
-              <VStack spacing={4} align='stretch'>
-                <Text><strong>Date:</strong> {selectedPayment.date}</Text>
-                <Text><strong>Amount:</strong> ${selectedPayment.amount.toFixed(2)}</Text>
-                <Text><strong>Method:</strong> {selectedPayment.method}</Text>
-                <Text><strong>Policy:</strong> {selectedPayment.policy}</Text>
-                <Text><strong>Details:</strong> {selectedPayment.details}</Text>
-                <FormControl>
-                  <FormLabel>Add Notes</FormLabel>
-                  <Input
-                    placeholder="Add your notes here"
-                    value={selectedPayment.notes}
-                    onChange={(e) => {
-                      const updatedPayment = { ...selectedPayment, notes: e.target.value };
-                      setPayments(payments.map(payment =>
-                        payment.id === selectedPayment.id ? updatedPayment : payment
-                      ));
-                    }}
-                  />
-                </FormControl>
-              </VStack>
-            )}
-          </ModalBody>
-          <ModalFooter>
-            <Button colorScheme='blue' onClick={onClose}>Close</Button>
-          </ModalFooter>
-        </ModalContent>
-      </Modal>
+      {/* Payment Details Modal */}
+      {selectedPayment && (
+        <Modal isOpen={isOpen} onClose={onClose}>
+          <ModalOverlay />
+          <ModalContent>
+            <ModalHeader>Payment Details</ModalHeader>
+            <ModalBody>
+              <Text><strong>Date:</strong> {selectedPayment.date}</Text>
+              <Text><strong>Amount:</strong> ${selectedPayment.amount.toFixed(2)}</Text>
+              <Text><strong>Method:</strong> {selectedPayment.method}</Text>
+              <Text><strong>Policy:</strong> {selectedPayment.policy}</Text>
+              <Text><strong>Details:</strong> {selectedPayment.details}</Text>
+              <Text><strong>Notes:</strong> {selectedPayment.notes}</Text>
+            </ModalBody>
+            <ModalFooter>
+              <Button colorScheme='blue' mr={3} onClick={onClose}>
+                Close
+              </Button>
+            </ModalFooter>
+          </ModalContent>
+        </Modal>
+      )}
     </Card>
   );
 };

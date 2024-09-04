@@ -12,6 +12,8 @@
     "@emotion/react": "^11.4.1",
     "@emotion/styled": "^11.3.0",
     "@hypertheme-editor/chakra-ui": "^0.1.5",
+    "@nomiclabs/hardhat-etherscan": "^3.1.8",
+    "@openzeppelin/contracts": "^5.0.2",
     "@svgr/cli": "^8.1.0",
     "@testing-library/jest-dom": "^5.14.1",
     "@testing-library/react": "^11.2.7",
@@ -22,6 +24,8 @@
     "babel-preset-react": "^6.24.1",
     "babel-register": "^6.26.0",
     "chart.js": "^4.4.4",
+    "dotenv": "^16.4.5",
+    "ethers": "^6.13.2",
     "framer-motion": "^4.1.17",
     "react": "17.0.2",
     "react-apexcharts": "1.4.0",
@@ -73,6 +77,8 @@
     ]
   },
   "devDependencies": {
-    "gh-pages": "^3.2.3"
+    "@nomiclabs/hardhat-ethers": "^2.2.3",
+    "gh-pages": "^3.2.3",
+    "hardhat": "^2.22.10"
   }
 }
